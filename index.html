@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benvingut</title>
+    <style>
+        body {
+            background-color: green;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 20%;
+        }
+    </style>
+    <script>
+        // Funció per obtenir el valor del paràmetre GET 'nombre'
+        function getParameterByName(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Envia automàticament el nom al webhook
+        function sendToWebhook(nombre) {
+            if (nombre) {
+                fetch("https://hook.eu2.make.com/jns4xq3q15nkbrme27361xjz66auvdfr", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nombre: nombre })
+                }).then(response => console.log("Dades enviades al webhook"))
+                  .catch(error => console.error("Error enviant dades:", error));
+            }
+        }
+
+        // Quan la pàgina carregui
+        window.onload = function() {
+            const nombre = getParameterByName("nombre");
+            if (nombre) {
+                document.title = "Benvingut al software de serveis socials " + nombre;
+                document.getElementById("welcomeMessage").innerText = "Benvingut al software de serveis socials " + nombre;
+                sendToWebhook(nombre);
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1 id="welcomeMessage">Benvingut al software de serveis socials</h1>
+</body>
+</html>
